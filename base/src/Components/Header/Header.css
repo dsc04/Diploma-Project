@@ -1,0 +1,91 @@
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    padding: 18px 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    color: #2d3436;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+  
+  header:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  header h1 {
+    font-size: 2.1rem;
+    margin: 0;
+    background: linear-gradient(90deg, #0984e3 0%, #00cec9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    transition: all 0.3s ease;
+  }
+  
+  header h1:hover {
+    transform: scale(1.02);
+  }
+  
+  .HeaderButtons {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .btn:active {
+    transform: translateY(0);
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #74b9ff 0%, #0765b4 100%);
+  }
+  
+  .btn-success {
+    background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+  }
+  
+  .btn-success:hover {
+    background: linear-gradient(135deg, #55efc4 0%, #01866b 100%);
+  }
+  
+  /* Добавляем иконки (нужно подключить Font Awesome) */
+  .btn::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+  }
+  
+  .btn-primary::before {
+    content: '\f015'; /* Иконка дома */
+  }
+  
+  .btn-success::before {
+    content: '\f234'; /* Иконка пользователей */
+  }
+

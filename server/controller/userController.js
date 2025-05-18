@@ -1,75 +1,89 @@
+
 import User from "../model/userModel.js";
+import userService from "../service/userService.js";
+import { validationResult } from "express-validator";
+import ApiError from "../exceptions/apiErrors.js";
 
-export const create = async(req, res) => {
-    try {
-        const newUser = new User(req.body)
-        const {email} = newUser
+export class UserController {
+    async registration(req, res, next){
+        try{
+            const errors = validationResult(req);
+            if(!errors.isEmpty()){
+                return next(ApiError.BadRequest('Ошибка Валидации', errors.array()))
+            }
+            const {name,email,password,description}=req.body;
 
-        const userExists = await User.findOne({email})
-        if (userExists) {
-            return res.status(400).json({message: "Уже есть"});
+        if (!password) {
+            return res.status(400).json({ error: "Password is required" });
         }
-        const savedData = await newUser.save();
-        res.status(200).json(savedData);
 
-    } catch (error) {
-        res.status(500).json({errorMessage:error.message})
-    }
-};
-
-export const getAllUsers = async (req, res) => {
-    try {
-        const userData = await User.find();
-        if(!userData || userData.length === 0){
-            return res.status(404).json({message :"Не поймал"})
+            const userData = await userService.registration({name, email, password, description});
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 *60 * 1000, httpOnly:true})
+            return res.json(userData)
+        }catch(e){
+            console.log(e);
+            next(e);
         }
-        res.status(200).json(userData);
-    } catch (error) {
-        res.status(500).json({ errorMessage: error.message})
     }
-
-};
-
-export const getUserById = async (req, res) => {
-    try {
-        const id = req.params.id;
-        const userExists = await User.findById(id);
-        if(!userExists){
-            return res.status(404).json({message :"Не поймал 2"})
+    async login(req, res, next){
+        try{
+            const {email, password} = req.body;
+            const userData = await userService.login(email,password)
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 *60 * 1000, httpOnly:true})
+            return res.json(userData)
+        }catch(e){
+            next(e);
         }
-        res.status(200).json(userExists)
-    } catch (error) {
-        res.status(500).json({ errorMessage: error.message})
     }
-
-};
-
-export const update = async (req, res) => {
-    try{
-        const id = req.params.id;
-        const userExists = await User.findById(id);
-        if(!userExists){
-            return res.status(404).json({message :"Не поймал 2"})
+    async logout(req, res, next){
+        try{
+            const {refreshToken} = req.cookies;
+            const token = await userService.logout(refreshToken);
+            res.clearCookie('refreshToken');
+            return res.json(token);
+        }catch(e){
+            next(e);
         }
-       const updatedData = await User.findByIdAndUpdate(id, req.body, {
-            new:true
-        })
-        res.status(200).json(updatedData);
-    }catch(error){
-        res.status(500).json({ errorMessage: error.message})
     }
-};
-
-export const deleteUser = async (req, res) =>{
-    try{
-        const id = req.params.id;
-        const userExists = await User.findById(id);
-        if(!userExists){
-            return res.status(404).json({message :"Не поймал 3"})
+    async refresh(req, res, next){
+        try{
+            const {refreshToken} = req.cookies;
+            const userData = await userService.refresh(refreshToken);
+            res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 *60 * 1000, httpOnly:true})
+            return res.json(userData)
+        }catch(e){
+            next(e);
         }
-        await User.findByIdAndDelete(id);
-        res.status(200).json({message:"Удалил"});
-    } catch(error) {
-        res.status(500).json({ errorMessage: error.message});
     }
-};
+    async getUsers(req, res, next) {
+        try {
+            const users = await userService.getAllUsers();
+            return res.json(users);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async checkAuth(req, res, next) {
+  try {
+    const userId = req.user.id; // из middleware
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "Пользователь не найден" });
+    }
+
+    res.json({
+      user: {
+        name: user.name,
+        email: user.email,
+        description: user.description
+      }
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+    
+    }
