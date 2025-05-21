@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema ({
         required: false,
         unique:false
     },
-    profilepicture: {
+    Avatar: {
         type:String,
         required: false,
         unique:false

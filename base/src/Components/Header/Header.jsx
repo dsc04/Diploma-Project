@@ -11,7 +11,7 @@ const Header = () => {
             <Link to="/add" className="btn btn-success">Регистрация</Link>
             <Link to="/Profile" className="btn btn-success">Профиль</Link>
             <Link to="/Login" className="btn btn-success">Вход</Link>
-            
+            <Link to="/add-product" className="btn btn-success">Добавить товар</Link>
             </div>
         </header>
     );

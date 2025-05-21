@@ -3,6 +3,7 @@ import User from "../model/userModel.js";
 import userService from "../service/userService.js";
 import { validationResult } from "express-validator";
 import ApiError from "../exceptions/apiErrors.js";
+import { UserDto } from "../dtos/userDto.js";
 
 export class UserController {
     async registration(req, res, next){
@@ -64,22 +65,43 @@ export class UserController {
         }
     }
 
-    async checkAuth(req, res, next) {
+async checkAuth(req, res, next) {
   try {
-    const userId = req.user.id; // из middleware
+    const userId = req.user.id; // From middleware
     const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "Пользователь не найден" });
     }
 
-    res.json({
-      user: {
-        name: user.name,
-        email: user.email,
-        description: user.description
-      }
-    });
+    const userDto = new UserDto(user); // Use UserDto
+    res.json({ user: userDto });
+  } catch (e) {
+    next(e);
+  }
+}
+
+async uploadAvatar(req, res, next) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Файл не был загружен" });
+    }
+    
+    const userId = req.user.id;
+    const avatarPath = `/uploads/${req.file.filename}`; // Include /uploads/ in the path
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { Avatar: avatarPath },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "Пользователь не найден" });
+    }
+
+    const userDto = new UserDto(user); // Use UserDto to format the user data
+    res.json({ user: userDto }); // Return the full user object
   } catch (e) {
     next(e);
   }
@@ -87,3 +109,6 @@ export class UserController {
 
     
     }
+
+export default new UserController();
+

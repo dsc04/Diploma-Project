@@ -1,25 +1,36 @@
-// controller/productController.js
 import Product from "../model/productModel.js";
+import ApiError from "../exceptions/apiErrors.js";
 
-export const addProduct = async (req, res) => {
+export const addProduct = async (req, res, next) => {
   try {
-    const { name, price, description } = req.body;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
+    const { name, description, price, category } = req.body;
+    if (!req.file) {
+      return next(ApiError.BadRequest("Изображение обязательно"));
+    }
 
-    const newProduct = new Product({ name, price, description, image: imagePath });
-    const saved = await newProduct.save();
+    const imagePath = `/uploads/${req.file.filename}`;
+    const userId = req.user.id; // From authMiddleware
 
-    res.status(201).json(saved);
-  } catch (err) {
-    res.status(500).json({ errorMessage: err.message });
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      image: imagePath,
+      user: userId,
+      category
+    });
+
+    res.json({ message: "Товар добавлен", product });
+  } catch (e) {
+    next(e);
   }
 };
 
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res, next) => {
   try {
-    const data = await Product.find();
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ errorMessage: err.message });
+    const products = await Product.find().populate('user', 'name email');
+    res.json(products);
+  } catch (e) {
+    next(e);
   }
 };

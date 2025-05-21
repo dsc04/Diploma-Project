@@ -1,0 +1,140 @@
+/* AddProduct.css */
+.add-product {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.add-product h1 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.add-product form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.add-product label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.add-product input,
+.add-product textarea,
+.add-product select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+}
+
+.add-product input:focus,
+.add-product textarea:focus,
+.add-product select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.add-product textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.add-product input[type="file"] {
+  position: relative;
+  padding: 0.5rem;
+  border: 2px dashed #cbd5e0;
+  background: #f8fafc;
+}
+
+.add-product input[type="file"]::file-selector-button {
+  visibility: hidden;
+}
+
+.add-product input[type="file"]::before {
+  content: 'Выберите файл';
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0.5rem 1rem;
+  background: #4299e1;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-product button[type="submit"] {
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4299e1;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.add-product button[type="submit"]:hover {
+  background: #3182ce;
+  transform: translateY(-1px);
+}
+
+.add-product button[type="submit"]:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-product .error-message {
+  color: #e53e3e;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 640px) {
+  .add-product {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .add-product h1 {
+    font-size: 1.5rem;
+  }
+  
+  .add-product input,
+  .add-product textarea,
+  .add-product select {
+    font-size: 0.9rem;
+  }
+}
