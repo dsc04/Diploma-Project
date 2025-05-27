@@ -1,19 +1,27 @@
 import multer from "multer";
-import path from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const storage = multer.memoryStorage(); // Храним файлы в памяти
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
+const uploadArray = multer({
+  storage,
+  limits: { files: 10 },
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Только изображения разрешены!"));
+    }
+    cb(null, true);
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); 
+}).array("images", 10);
+
+const uploadSingle = multer({
+  storage,
+  limits: { files: 1 },
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Только изображения разрешены!"));
+    }
+    cb(null, true);
   },
-});
+}).single("avatar");
 
-const upload = multer({ storage });
-
-export default upload;
+export { uploadSingle, uploadArray };

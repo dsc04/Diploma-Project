@@ -1,0 +1,125 @@
+.product-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-layout {
+  display: flex;
+  gap: 2rem;
+}
+
+.detail-images {
+  flex: 1;
+  max-width: 50%;
+  position: relative;
+}
+
+.detail-content {
+  flex: 1;
+  max-width: 50%;
+  text-align: left;
+}
+
+.slick-slider {
+  max-width: 100%;
+  margin-bottom: 2rem;
+}
+
+.slick-slide {
+  position: relative;
+  overflow: hidden; /* Ограничиваем изображение внутри слайда */
+}
+
+.product-detail-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease; /* Плавный переход для зума */
+  display: block; /* Убираем лишние отступы */
+}
+
+.slick-slide:hover .product-detail-image {
+  transform: scale(1.4); /* Увеличиваем изображение при наведении */
+}
+
+.slick-arrow {
+  z-index: 1;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #333;
+}
+
+.product-detail-name {
+  font-size: 4.5rem;
+  margin: 0.5rem 0;
+}
+
+.product-detail-description {
+  font-size: 1.5rem;
+  color: #666;
+  margin: 1rem 0;
+}
+
+.product-meta {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  margin-bottom: 1rem;
+}
+
+.product-detail-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0984e3;
+  margin-right: 0.5rem;
+}
+
+.meta-dot {
+  margin: 0 0.5rem;
+  color: #888;
+}
+
+.product-detail-category {
+  font-size: 1rem;
+  color: #888;
+}
+
+.product-detail-info {
+  border-top: 1px solid #e0e0e0;
+}
+
+.product-detail-seller {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #888;
+  margin: 0.5rem 0;
+}
+
+.product-detail-date {
+  font-size: 1rem;
+  color: #888;
+  margin: 0.5rem 0;
+}
+
+.product-detail-info .product-meta {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.product-detail-seller {
+  display: flex;
+  align-items: center;
+}
+
+.back-button{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: "0.5rem 1rem";
+  background-color: #4ab0fe;
+  border: none;
+  border-radius: 4px;
+}

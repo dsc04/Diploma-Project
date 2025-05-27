@@ -25,9 +25,13 @@ const AvatarUploader = ({ user, setUser }) => {
     setError(null);
 
     try {
-      const response = await $api.put("/upload-avatar", formData);
+      const response = await $api.put("/api/upload-avatar", formData);
       console.log("Response:", response.data); // Debug log
-      setUser(response.data.user);
+      // Преобразуем _id в id для соответствия ожиданиям Profile.jsx
+      setUser({
+        ...response.data.user,
+        id: response.data.user._id || response.data.user.id,
+      });
       setSelectedFile(null);
     } catch (error) {
       console.error("Ошибка при загрузке:", error);
@@ -37,7 +41,7 @@ const AvatarUploader = ({ user, setUser }) => {
     }
   };
 
- return (
+  return (
     <div className="avatar-uploader">
       <input
         type="file"
@@ -48,14 +52,12 @@ const AvatarUploader = ({ user, setUser }) => {
       <label htmlFor="avatarInput">
         {selectedFile ? selectedFile.name : "Выберите файл"}
       </label>
-      
       <button
         onClick={handleUpload}
         disabled={uploading || !selectedFile}
       >
         {uploading ? "Загрузка..." : "Загрузить аватар"}
       </button>
-      
       {error && <p className="error-message">{error}</p>}
     </div>
   );

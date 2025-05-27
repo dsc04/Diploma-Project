@@ -1,11 +1,12 @@
-import './App.css';
 import { User } from './Components/getUser/User.jsx';
 import { AddUser } from './Components/adduser/AddUser.jsx';
 import Home from './Components/HomePage/Home'
 import Profile from './Components/Profile/Profile.jsx';
 import Login from './Components/Login/Login.jsx';
 import AddProduct from './Components/addProduct/addProduct.jsx';
-import { AuthProvider } from './Context/AuthContext.js'; // путь проверь
+import { AuthProvider } from './Context/AuthContext.js';
+import ProductDetail from './Components/productDetail/productDetail.jsx';
+
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 
 function App() {
@@ -23,6 +24,10 @@ function App() {
       element:<Profile/>
     },
     {
+      path:"/profile/:userId",
+      element:<Profile/>
+    },
+    {
       path:"/",
       element:<Home/>
     },
@@ -33,6 +38,10 @@ function App() {
     {
       path:"/add-product",
       element:<AddProduct/>
+    },
+    {
+      path:"/product/:id",
+      element:<ProductDetail/>
     }
   ])
   return (

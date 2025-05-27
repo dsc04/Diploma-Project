@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import $api, { API_URL } from '../http'; // не забудь поправить путь
+import $api from '../http';
 
 export const AuthContext = createContext();
 
@@ -11,52 +10,56 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await $api.post('/login', { email, password });
+      const response = await $api.post('/api/login', { email, password });
       localStorage.setItem('token', response.data.accessToken);
-      setUser(response.data.user);
+      setUser({ ...response.data.user, id: response.data.user.id || response.data.user._id });
       setIsAuth(true);
+      console.log("Login user:", response.data.user); // Лог для отладки
     } catch (e) {
-      console.error(e.response?.data?.message);
+      console.error("Ошибка входа:", e.response?.data?.message || e.message);
+      throw e;
     }
   };
 
   const registration = async (email, password, name, description) => {
     try {
-      const response = await $api.post('/registration', {
+      const response = await $api.post('/api/registration', {
         email,
         password,
         name,
-        description
+        description,
       });
       localStorage.setItem('token', response.data.accessToken);
-      setUser(response.data.user);
+      setUser({ ...response.data.user, id: response.data.user.id || response.data.user._id });
       setIsAuth(true);
+      console.log("Registration user:", response.data.user); // Лог для отладки
     } catch (e) {
-      console.error(e.response?.data?.message);
+      console.error("Ошибка регистрации:", e.response?.data?.message || e.message);
+      throw e;
     }
   };
 
   const logout = async () => {
     try {
-      await $api.post('/logout');
+      await $api.post('/api/logout');
       localStorage.removeItem('token');
       setUser(null);
       setIsAuth(false);
     } catch (e) {
-      console.error(e.response?.data?.message);
+      console.error("Ошибка выхода:", e.response?.data?.message || e.message);
     }
   };
 
   const checkAuth = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/refresh`, {
-        withCredentials: true
-      });
+      const response = await $api.get('/api/refresh', { withCredentials: true });
       localStorage.setItem('token', response.data.accessToken);
-      setUser(response.data.user);
+      setUser({ ...response.data.user, id: response.data.user.id || 'response.data.user._id' });
       setIsAuth(true);
+      console.log("Check auth user:", response.data.user); // Лог для отладки
     } catch (e) {
+      console.error("Ошибка проверки авторизации:", e.response?.data?.message || e.message);
       setUser(null);
       setIsAuth(false);
     } finally {
@@ -69,10 +72,17 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{
-      user, isAuth, isLoading,
-      login, registration, logout, checkAuth
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuth,
+        isLoading,
+        login,
+        registration,
+        logout,
+        checkAuth,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

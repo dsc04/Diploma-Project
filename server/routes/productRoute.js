@@ -1,11 +1,15 @@
-// routes/productRoute.js
 import express from "express";
-import { addProduct, getAllProducts } from "../controller/productController.js";
-import upload from "../middleware/upload.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+import { uploadArray } from "../middleware/upload.js";
+import { addProduct, getProducts, getProductById, getUserProducts, searchProducts, getMaxPrice } from "../controller/productController.js";
 
-const router = express.Router();
+const route = express.Router();
 
-router.post("/product", upload.single("image"), addProduct);
-router.get("/products", getAllProducts);
+route.post("/product", authMiddleware, uploadArray, addProduct);
+route.get("/products", getProducts);
+route.get("/product/:id", getProductById);
+route.get("/user-products/:userId", getUserProducts);
+route.get("/search", searchProducts);
+route.get("/max-price", getMaxPrice); // Убрали /api
 
-export default router;
+export default route;
