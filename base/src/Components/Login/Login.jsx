@@ -78,6 +78,14 @@ export const Login = () => {
             </Link>
           </div>
         </form>
+
+        {/* Add the "No account? Register" text with a clickable link */}
+        <div className="register-prompt">
+          <span>Нет аккаунта? </span>
+          <Link to="/add" className="register-link">
+            Зарегистрируйтесь
+          </Link>
+        </div>
       </div>
     </div>
   );
