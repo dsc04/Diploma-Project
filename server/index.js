@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoute.js";
 import productRoutes from "./routes/productRoute.js"; // Add this import
+import reviewRoutes from './routes/review.js';
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import errorMiddleware from "./middleware/errorMiddleware.js";
@@ -32,6 +33,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api", userRoutes);
 app.use("/api", productRoutes); // Add product routes
+app.use('/api', reviewRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorMiddleware);

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import userModel from "./userModel.js";
+import mongoose from 'mongoose';
+import userModel from './userModel.js';
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -8,7 +8,9 @@ const productSchema = new mongoose.Schema({
   images: [{ type: String }],
   creationDate: { type: Date, default: Date.now },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  category: { type: String, enum: ['Electronics', 'Clothing', 'Books', 'Furniture', 'Other'], default: 'Other' }
+  category: { type: String, enum: ['Electronics', 'Clothing', 'Books', 'Furniture', 'Other'], default: 'Other' },
+  averageRating: { type: Number, default: 0, min: 0, max: 5 },
+  reviewCount: { type: Number, default: 0 },
 });
 
-export default mongoose.model("Product", productSchema);
+export default mongoose.model('Product', productSchema);

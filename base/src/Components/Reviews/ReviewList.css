@@ -1,0 +1,52 @@
+.review-list {
+  margin-top: 2rem;
+}
+
+.review-item {
+  background: #fff;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.reviewer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.reviewer-name {
+  font-weight: bold;
+}
+
+.review-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.review-ratings {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.review-comment {
+  margin: 0.5rem 0;
+}
+
+.review-product {
+  font-style: italic;
+  color: #666;
+}
+
+.error {
+  color: red;
+}

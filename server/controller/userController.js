@@ -5,7 +5,7 @@ import ApiError from "../exceptions/apiErrors.js";
 import { UserDto } from "../dtos/userDto.js";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
-import { Readable } from "stream"; // Добавляем импорт Readable
+import { Readable } from "stream";
 
 dotenv.config();
 
@@ -65,25 +65,25 @@ export class UserController {
     }
   }
 
-async refresh(req, res, next) {
-  try {
-    const { refreshToken } = req.cookies;
-    console.log("Refresh token from cookies:", refreshToken); // Логируем токен
-    if (!refreshToken) {
-      throw ApiError.UnauthorizedError("Токен отсутствует");
+  async refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      console.log("Refresh token from cookies:", refreshToken);
+      if (!refreshToken) {
+        throw ApiError.UnauthorizedError("Токен отсутствует");
+      }
+      const userData = await userService.refresh(refreshToken);
+      console.log("Refresh user data:", userData);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
+      return res.json(userData);
+    } catch (e) {
+      console.error("Refresh error:", e.message);
+      next(e);
     }
-    const userData = await userService.refresh(refreshToken);
-    console.log("Refresh user data:", userData); // Логируем данные
-    res.cookie("refreshToken", userData.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
-    });
-    return res.json(userData);
-  } catch (e) {
-    console.error("Refresh error:", e.message); // Логируем ошибку
-    next(e);
   }
-}
 
   async getUsers(req, res, next) {
     try {
@@ -98,11 +98,9 @@ async refresh(req, res, next) {
     try {
       const userId = req.user.id;
       const user = await User.findById(userId);
-
       if (!user) {
         return res.status(404).json({ message: "Пользователь не найден" });
       }
-
       const userDto = new UserDto(user);
       res.json({ user: userDto });
     } catch (e) {
@@ -123,10 +121,8 @@ async refresh(req, res, next) {
       console.log("Avatar file:", req.file);
       console.log("Avatar buffer:", req.file.buffer);
 
-      // Преобразуем Buffer в поток
       const stream = Readable.from(req.file.buffer);
 
-      // Используем upload_stream для загрузки
       const result = await new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
@@ -144,7 +140,6 @@ async refresh(req, res, next) {
         stream.pipe(uploadStream);
       });
 
-      // Обновляем аватар пользователя
       const user = await User.findByIdAndUpdate(
         req.user.id,
         { Avatar: result.secure_url },
@@ -163,10 +158,13 @@ async refresh(req, res, next) {
 
   async getUserById(req, res, next) {
     try {
-      const user = await User.findById(req.params.id).select("name email Avatar description");
+      const user = await User.findById(req.params.id).select(
+        "name email Avatar description sellerAverageRating sellerReviewCount"
+      );
       if (!user) {
         return next(ApiError.NotFound("Пользователь не найден"));
       }
+      console.log("Sending user data for getUserById:", user);
       res.json(user);
     } catch (e) {
       next(e);
