@@ -3,7 +3,7 @@ import $api from '../../http';
 import { AuthContext } from '../../Context/AuthContext';
 import './ReviewForm.css';
 
-const ReviewForm = ({ productId, sellerId, onReviewAdded }) => {
+const ReviewForm = ({ productId, sellerId, onReviewAdded, closeModal }) => {
   const { user } = useContext(AuthContext);
   const [productRating, setProductRating] = useState(0);
   const [sellerRating, setSellerRating] = useState(0);
@@ -35,7 +35,7 @@ const ReviewForm = ({ productId, sellerId, onReviewAdded }) => {
       setProductRating(0);
       setSellerRating(0);
       setComment('');
-      onReviewAdded(response.data.review); // Pass the new review to the callback
+      onReviewAdded(response.data.review);
     } catch (e) {
       setError(e.response?.data?.message || 'Ошибка при добавлении отзыва');
     } finally {
@@ -60,30 +60,43 @@ const ReviewForm = ({ productId, sellerId, onReviewAdded }) => {
   );
 
   return (
-    <form className="review-form" onSubmit={handleSubmit}>
-      <h3>Оставить отзыв</h3>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-      <div className="form-group">
-        <label>Рейтинг товара:</label>
-        {renderStars(productRating, setProductRating)}
+    <div className="modal-backdrop">
+      <div className="modal">
+        <button className="modal-close" onClick={closeModal}>
+          ✕
+        </button>
+        <form className="review-form" onSubmit={handleSubmit}>
+          <h3>Оставить отзыв</h3>
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">{success}</p>}
+          <div className="form-group">
+            <p className='rating-title'>Рейтинг товара:</p>
+            {renderStars(productRating, setProductRating)}
+          </div>
+          <div className="form-group">
+            <p className='rating-title'>Рейтинг продавца:</p>
+            {renderStars(sellerRating, setSellerRating)}
+          </div>
+          <div className="form-group">
+            <p className='rating-title'>Комментарий:</p>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              required
+              placeholder="Напишите ваш отзыв здесь..."
+            />
+          </div>
+          <div className="modal-actions">
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Отправка...' : 'Отправить'}
+            </button>
+            <button type="button" onClick={closeModal} className="cancel-button">
+              Отмена
+            </button>
+          </div>
+        </form>
       </div>
-      <div className="form-group">
-        <label>Рейтинг продавца:</label>
-        {renderStars(sellerRating, setSellerRating)}
-      </div>
-      <div className="form-group">
-        <label>Комментарий:</label>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Отправка...' : 'Отправить'}
-      </button>
-    </form>
+    </div>
   );
 };
 

@@ -20,7 +20,7 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [newReview, setNewReview] = useState(null); // State to hold the new review
+  const [newReview, setNewReview] = useState(null);
 
   const fetchProduct = useCallback(async () => {
     try {
@@ -81,8 +81,12 @@ const ProductDetail = () => {
 
   const handleReviewAdded = (review) => {
     setShowReviewForm(false);
-    fetchProduct(); // Refresh product data (includes updated averageRating)
-    setNewReview(review); // Pass the new review to ReviewList
+    fetchProduct();
+    setNewReview(review);
+  };
+
+  const closeModal = () => {
+    setShowReviewForm(false);
   };
 
   return (
@@ -168,7 +172,7 @@ const ProductDetail = () => {
             {!isOwnProduct && user && (
               <button
                 className="add-review-button"
-                onClick={() => setShowReviewForm(!showReviewForm)}
+                onClick={() => setShowReviewForm(true)}
                 style={{
                   marginTop: '1rem',
                   padding: '0.5rem 1rem',
@@ -179,20 +183,21 @@ const ProductDetail = () => {
                   cursor: 'pointer',
                 }}
               >
-                {showReviewForm ? 'Скрыть форму' : 'Добавить отзыв'}
+                Добавить отзыв
               </button>
-            )}
-            {showReviewForm && !isOwnProduct && user && (
-              <ReviewForm
-                productId={product._id}
-                sellerId={product.user._id}
-                onReviewAdded={handleReviewAdded}
-              />
             )}
           </div>
         </div>
         <ReviewList productId={product._id} onReviewAdded={newReview} />
       </div>
+      {showReviewForm && !isOwnProduct && user && product.user && (
+        <ReviewForm
+          productId={product._id}
+          sellerId={product.user?._id}
+          onReviewAdded={handleReviewAdded}
+          closeModal={closeModal}
+        />
+      )}
     </div>
   );
 };
