@@ -25,7 +25,7 @@ const ReviewForm = ({ productId, sellerId, onReviewAdded }) => {
 
     setIsSubmitting(true);
     try {
-      await $api.post('/api/review', {
+      const response = await $api.post('/api/review', {
         productId,
         productRating,
         sellerRating,
@@ -35,7 +35,7 @@ const ReviewForm = ({ productId, sellerId, onReviewAdded }) => {
       setProductRating(0);
       setSellerRating(0);
       setComment('');
-      onReviewAdded();
+      onReviewAdded(response.data.review); // Pass the new review to the callback
     } catch (e) {
       setError(e.response?.data?.message || 'Ошибка при добавлении отзыва');
     } finally {

@@ -1,38 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import $api from '../../http';
 import RatingDisplay from './RatingDisplay';
 import './ReviewList.css';
 
-const ReviewList = ({ productId, sellerId }) => {
+const ReviewList = ({ productId, sellerId, onReviewAdded }) => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const endpoint = productId
-          ? `/api/product/${productId}/reviews`
-          : `/api/user/${sellerId}/reviews`;
-        console.log(`Fetching reviews from: ${endpoint}`);
-        const response = await $api.get(endpoint);
-        console.log('Reviews response:', JSON.stringify(response.data, null, 2)); // Detailed log
-        setReviews(Array.isArray(response.data) ? response.data : []);
-      } catch (e) {
-        console.error('Error fetching reviews:', e.response?.data || e.message);
-        setError(e.response?.data?.message || 'Ошибка при загрузке отзывов');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchReviews = useCallback(async () => {
+    try {
+      const endpoint = productId
+        ? `/api/product/${productId}/reviews`
+        : `/api/user/${sellerId}/reviews`;
+      console.log(`Fetching reviews from: ${endpoint}`);
+      const response = await $api.get(endpoint);
+      console.log('Reviews response:', JSON.stringify(response.data, null, 2));
+      setReviews(Array.isArray(response.data) ? response.data : []);
+    } catch (e) {
+      console.error('Error fetching reviews:', e.response?.data || e.message);
+      setError(e.response?.data?.message || 'Ошибка при загрузке отзывов');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [productId, sellerId]);
 
+  useEffect(() => {
     if (productId || sellerId) {
       fetchReviews();
     } else {
       setIsLoading(false);
       setError('Не указан ID товара или продавца');
     }
-  }, [productId, sellerId]);
+  }, [fetchReviews]);
+
+  // Handle new review addition
+  useEffect(() => {
+    if (onReviewAdded) {
+      setReviews((prevReviews) => [onReviewAdded, ...prevReviews]); // Optimistically add the new review
+    }
+  }, [onReviewAdded]);
 
   if (isLoading) return <p>Загрузка отзывов...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -61,17 +68,11 @@ const ReviewList = ({ productId, sellerId }) => {
           <div className="review-ratings">
             <div>
               <span>Товар: </span>
-              <RatingDisplay
-                rating={review.productRating || 0}
-                reviewCount={1}
-              />
+              <RatingDisplay rating={review.productRating || 0} reviewCount={1} />
             </div>
             <div>
               <span>Продавец: </span>
-              <RatingDisplay
-                rating={review.sellerRating || 0}
-                reviewCount={1}
-              />
+              <RatingDisplay rating={review.sellerRating || 0} reviewCount={1} />
             </div>
           </div>
           <p className="review-comment">{review.comment || 'Нет комментария'}</p>

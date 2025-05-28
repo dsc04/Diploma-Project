@@ -42,6 +42,11 @@ export class ReviewController {
         comment,
       });
 
+      // Популяция user для возвращаемого отзыва
+      const populatedReview = await Review.findById(review._id)
+        .populate('user', 'name Avatar')
+        .lean();
+
       // Обновляем рейтинг товара
       const productReviews = await Review.find({ product: productId });
       const productAvgRating =
@@ -75,9 +80,9 @@ export class ReviewController {
         _id: updatedSeller._id,
         sellerAverageRating: updatedSeller.sellerAverageRating,
         sellerReviewCount: updatedSeller.sellerReviewCount,
-      }); // Debug log
+      });
 
-      res.json({ message: 'Отзыв добавлен', review });
+      res.json({ message: 'Отзыв добавлен', review: populatedReview });
     } catch (e) {
       console.error('Error in addReview:', e);
       next(e);

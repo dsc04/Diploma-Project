@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react'; // Added useCallback
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import $api from '../../http';
 import Header from '../Header/Header';
@@ -20,8 +20,9 @@ const ProductDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [newReview, setNewReview] = useState(null); // State to hold the new review
 
-const fetchProduct = useCallback(async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const response = await $api.get(`/api/product/${id}`);
       setProduct(response.data);
@@ -32,11 +33,11 @@ const fetchProduct = useCallback(async () => {
     } finally {
       setIsLoading(false);
     }
-  }, [id]); // id is a dependency since it's used in the API call
+  }, [id]);
 
   useEffect(() => {
     fetchProduct();
-  }, [fetchProduct]); // Add fetchProduct as a dependency
+  }, [fetchProduct]);
 
   const sliderSettings = {
     dots: true,
@@ -77,6 +78,12 @@ const fetchProduct = useCallback(async () => {
   const uniqueImages = [...new Set(product.images || [])];
   const isOwnProduct = user && product.user && user.id === product.user._id?.toString();
   console.log('Is own product:', isOwnProduct, 'User ID:', user?.id, 'Product User ID:', product.user?._id?.toString());
+
+  const handleReviewAdded = (review) => {
+    setShowReviewForm(false);
+    fetchProduct(); // Refresh product data (includes updated averageRating)
+    setNewReview(review); // Pass the new review to ReviewList
+  };
 
   return (
     <div style={{ padding: '2rem' }}>
@@ -179,15 +186,12 @@ const fetchProduct = useCallback(async () => {
               <ReviewForm
                 productId={product._id}
                 sellerId={product.user._id}
-                onReviewAdded={() => {
-                  setShowReviewForm(false);
-                  fetchProduct(); // Перезагрузка данных товара
-                }}
+                onReviewAdded={handleReviewAdded}
               />
             )}
           </div>
         </div>
-        <ReviewList productId={product._id} />
+        <ReviewList productId={product._id} onReviewAdded={newReview} />
       </div>
     </div>
   );
