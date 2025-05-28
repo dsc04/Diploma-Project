@@ -15,7 +15,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('products');
-  const [refreshKey, setRefreshKey] = useState(0); // For refreshing reviews only
+  const [refreshKey, setRefreshKey] = useState(0); 
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -42,11 +42,10 @@ const Profile = () => {
     fetchUserData();
   }, [fetchUserData]);
 
-  // Refresh reviews when switching to reviews tab
   useEffect(() => {
     if (activeTab === 'reviews') {
       console.log('Switching to reviews tab, refreshing with sellerId:', user?.id);
-      setRefreshKey((prev) => prev + 1); // Only increment refreshKey for ReviewList
+      setRefreshKey((prev) => prev + 1);
     }
   }, [activeTab, user?.id]);
 
@@ -94,11 +93,7 @@ const Profile = () => {
             {isOwnProfile && (
               <>
                 <div className="mt-4">
-                  <Link to="/add-product" className="text-blue-600 hover:underline">
-                    Добавить товар
-                  </Link>
                 </div>
-                <Logout />
                 <AvatarUploader user={user} setUser={setUser} />
               </>
             )}

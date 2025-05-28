@@ -1,0 +1,11 @@
+.drawer-item {
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 0.9rem;
+  text-align: left;
+  width: 100%;
+}

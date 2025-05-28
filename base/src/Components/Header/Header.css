@@ -1,91 +1,170 @@
+/* Existing styles (keep these) */
 header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-    padding: 18px 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    color: #2d3436;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-  }
-  
-  header:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-  }
-  
-  header h1 {
-    font-size: 2.1rem;
-    margin: 0;
-    background: linear-gradient(90deg, #0984e3 0%, #00cec9 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    transition: all 0.3s ease;
-  }
-  
-  header h1:hover {
-    transform: scale(1.02);
-  }
-  
-  .HeaderButtons {
-    display: flex;
-    gap: 12px;
-  }
-  
-  .btn {
-    padding: 10px 22px;
-    border: none;
-    border-radius: 8px;
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .btn:active {
-    transform: translateY(0);
-  }
-  
-  .btn-primary {
-    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
-  }
-  
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #74b9ff 0%, #0765b4 100%);
-  }
-  
-  .btn-success {
-    background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
-  }
-  
-  .btn-success:hover {
-    background: linear-gradient(135deg, #55efc4 0%, #01866b 100%);
-  }
-  
-  /* Добавляем иконки (нужно подключить Font Awesome) */
-  .btn::before {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-  }
-  
-  .btn-primary::before {
-    content: '\f015'; /* Иконка дома */
-  }
-  
-  .btn-success::before {
-    content: '\f234'; /* Иконка пользователей */
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+  padding: 18px 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  color: #2d3436;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative; /* Add position context for absolute positioning */
+}
 
+header:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+header h1 {
+  font-size: 2.1rem;
+  margin: 0;
+  background: linear-gradient(90deg, #0984e3 0%, #00cec9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  transition: all 0.3s ease;
+}
+
+header h1:hover {
+  transform: scale(1.02);
+}
+
+.HeaderButtons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #74b9ff 0%, #0765b4 100%);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #55efc4 0%, #01866b 100%);
+}
+
+/* Добавляем иконки (нужно подключить Font Awesome) */
+.btn::before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+
+.btn-primary::before {
+  content: '\f015'; /* Иконка дома */
+}
+
+.btn-success::before {
+  content: '\f234'; /* Иконка пользователей */
+}
+
+/* User Section */
+.user-section {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px; /* Changed from 50% to avoid clipping */
+  transition: background-color 0.2s;
+  position: relative; /* Provide positioning context for drawer-menu */
+}
+
+.user-section:hover {
+  background-color: #f0f0f0;
+}
+
+/* User Avatar */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+/* User Name */
+.user-name {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Drawer Menu */
+.drawer-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  z-index: 1001; /* Increased z-index to ensure it's above other elements */
+  min-width: 200px;
+  display: block; /* Ensure it's visible */
+}
+
+/* Drawer Item */
+.drawer-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.drawer-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Ensure Logout component inside drawer-item aligns properly */
+.drawer-item .logout-container {
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 0.9rem;
+  text-align: left;
+  width: 100%;
+}
+
+.drawer-item .logout-container:hover {
+  background-color: #f0f0f0;
+}
