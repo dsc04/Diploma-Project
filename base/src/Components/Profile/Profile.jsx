@@ -13,29 +13,30 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        let response;
-        if (userId) {
-          response = await $api.get(`/api/users/${userId}`);
-          console.log("Response from /api/users/:id:", response.data); // Лог для отладки
-          setUser({ ...response.data, id: response.data._id || response.data.id });
-        } else {
-          response = await $api.get("/api/checkAuth");
-          console.log("Response from /api/checkAuth:", response.data); // Лог для отладки
-          setUser({ ...response.data.user, id: response.data.user.id || response.data.user._id });
-        }
-      } catch (error) {
-        console.error("Ошибка при получении пользователя:", error);
-        setError("Не удалось загрузить профиль");
-      } finally {
-        setIsLoading(false);
+useEffect(() => {
+  const getUser = async () => {
+    try {
+      let response;
+      if (userId) {
+        response = await $api.get(`/api/users/${userId}`);
+        console.log("Response from /api/users/:id:", response.data);
+        setUser({ ...response.data, id: response.data._id || response.data.id });
+      } else {
+        response = await $api.get("/api/checkAuth");
+        console.log("Response from /api/checkAuth:", response.data);
+        setUser({ ...response.data.user, id: response.data.user.id || response.data.user._id });
       }
-    };
+      console.log("Profile userId:", userId, "isOwnProfile:", !userId); // Лог
+    } catch (error) {
+      console.error("Ошибка при получении пользователя:", error);
+      setError("Не удалось загрузить профиль");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    getUser();
-  }, [userId]);
+  getUser();
+}, [userId]);
 
   if (isLoading) {
     return <div>Загрузка...</div>;

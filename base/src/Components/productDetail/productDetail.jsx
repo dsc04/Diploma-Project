@@ -22,6 +22,7 @@ const ProductDetail = () => {
       try {
         const response = await $api.get(`/api/product/${id}`);
         setProduct(response.data);
+        console.log("Product data:", response.data); // Лог для отладки
       } catch (error) {
         console.error("Ошибка при получении товара:", error);
         setError("Не удалось загрузить товар");
@@ -69,8 +70,16 @@ const ProductDetail = () => {
     );
   }
 
-  const uniqueImages = [...new Set(product.images || [])]; // Добавили || [] на случай отсутствия images
-  const isOwnProduct = user && product.user && user.id === product.user._id?.toString(); // Добавили ?. для безопасного доступа
+  const uniqueImages = [...new Set(product.images || [])];
+  const isOwnProduct = user && product.user && user.id === product.user._id?.toString();
+  console.log(
+    "Is own product:",
+    isOwnProduct,
+    "User ID:",
+    user?.id,
+    "Product User ID:",
+    product.user?._id?.toString()
+  ); // Лог для отладки
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -119,7 +128,7 @@ const ProductDetail = () => {
               <div className="product-meta">
                 <div className="product-detail-seller">
                   {product.user && product.user.Avatar ? (
-                    <Link to={isOwnProduct ? "/profile" : `/profile/${product.user._id}`}>
+                    <Link to={isOwnProduct ? "/Profile" : `/profile/${product.user._id}`}>
                       <img
                         src={product.user.Avatar}
                         alt={product.user.name || "Пользователь"}
@@ -135,7 +144,7 @@ const ProductDetail = () => {
                     <span style={{ width: "40px", height: "40px", display: "inline-block", marginRight: "1rem" }} />
                   )}
                   {product.user ? (
-                    <Link to={isOwnProduct ? "/profile" : `/profile/${product.user._id}`} style={{ textDecoration: "none", color: "#333" }}>
+                    <Link to={isOwnProduct ? "/Profile" : `/profile/${product.user._id}`} style={{ textDecoration: "none", color: "#333" }}>
                       {product.user.name || "Неизвестный"}
                     </Link>
                   ) : (
