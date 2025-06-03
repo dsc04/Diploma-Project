@@ -169,7 +169,7 @@ export const getProductById = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id).populate(
       "user",
-      "name Avatar"
+      "name Avatar email"
     );
     if (!product) {
       return next(ApiError.NotFound("Товар не найден"));

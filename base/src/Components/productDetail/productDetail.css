@@ -64,7 +64,7 @@
 
 .product-meta {
   display: flex;
-  align-items: center;
+  align-items: left;
   margin: 0.5rem 0;
   margin-bottom: 1rem;
 }
@@ -122,4 +122,207 @@
   background-color: #4ab0fe;
   border: none;
   border-radius: 4px;
+}
+
+/* Existing styles (keep these) */
+.product-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-layout {
+  display: flex;
+  gap: 30px;
+}
+
+.detail-images {
+  flex: 1;
+}
+
+.product-detail-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.detail-content {
+  flex: 2;
+}
+
+.product-detail-name {
+  font-size: 2rem;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.product-detail-description {
+  margin: 10px 0;
+  color: #666;
+}
+
+.product-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
+  color: #666;
+}
+
+.product-detail-price {
+  font-weight: bold;
+  color: #000;
+}
+
+.meta-dot {
+  font-size: 1.2rem;
+}
+
+.product-detail-category {
+  text-transform: capitalize;
+}
+
+.product-detail-info {
+  margin: 15px 0;
+}
+
+.product-detail-seller {
+  display: flex;
+  align-items: center;
+}
+
+.seller-avatar {
+  object-fit: cover;
+}
+
+.product-detail-date {
+  font-size: 0.9rem;
+}
+
+.add-review-button {
+  margin-top: 1rem;
+}
+
+/* New styles for contact info */
+.contact-info {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.contact-email {
+  color: #007bff;
+  word-break: break-all; /* Prevents long emails from overflowing */
+}
+
+/* Existing styles (keep these) */
+.product-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.detail-layout {
+  display: flex;
+  gap: 30px;
+}
+
+.detail-images {
+  flex: 1;
+}
+
+.product-detail-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.detail-content {
+  flex: 2;
+}
+
+.product-detail-name {
+  font-size: 2rem;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.product-detail-description {
+  margin: 10px 0;
+  color: #666;
+}
+
+.product-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
+  color: #666;
+}
+
+.product-detail-price {
+  font-weight: bold;
+  color: #000;
+}
+
+.meta-dot {
+  font-size: 1.2rem;
+}
+
+.product-detail-category {
+  text-transform: capitalize;
+}
+
+.product-detail-info {
+  margin: 15px 0;
+}
+
+.product-detail-seller {
+  display: flex;
+  align-items: center;
+}
+
+.seller-avatar {
+  object-fit: cover;
+}
+
+.product-detail-date {
+  font-size: 0.9rem;
+}
+
+.add-review-button {
+  margin-top: 1rem;
+}
+
+/* Updated contact info styles */
+.contact-info-container {
+  margin-top: 10px; /* Ensure spacing from the seller info */
+}
+
+.contact-info {
+  margin-top: 5px; /* Adjusted spacing within container */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: left;
+  gap: 10px;
+  visibility: visible; /* Ensure it’s not hidden */
+}
+
+.contact-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.contact-email {
+  color: #007bff;
+  word-break: break-all; /* Prevents long emails from overflowing */
 }

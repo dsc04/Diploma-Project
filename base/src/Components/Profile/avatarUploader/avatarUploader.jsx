@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import $api from "../../../http";
+import { AuthContext } from "../../../Context/AuthContext";
 import "./avatarUploader.css";
 
 const AvatarUploader = ({ user, setUser }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
+  const { updateUser } = useContext(AuthContext); // Access updateUser function from context
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -27,11 +29,16 @@ const AvatarUploader = ({ user, setUser }) => {
     try {
       const response = await $api.put("/api/upload-avatar", formData);
       console.log("Response:", response.data); // Debug log
-      // Преобразуем _id в id для соответствия ожиданиям Profile.jsx
-      setUser({
+      // Update local state
+      const updatedUser = {
         ...response.data.user,
         id: response.data.user._id || response.data.user.id,
-      });
+      };
+      setUser(updatedUser);
+      // Update AuthContext if updateUser is available
+      if (updateUser) {
+        updateUser(updatedUser);
+      }
       setSelectedFile(null);
     } catch (error) {
       console.error("Ошибка при загрузке:", error);

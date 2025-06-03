@@ -16,6 +16,7 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('products');
   const [refreshKey, setRefreshKey] = useState(0); 
+  const [isEditing, setIsEditing] = useState(false); // New state for edit mode
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -83,19 +84,25 @@ const Profile = () => {
             />
           </div>
           <div className="profile-content">
-            <h1 className="profile-title animate__animated animate__fadeInDown">
-              {user?.name || 'Нет имени'}
-            </h1>
+            <div className="profile-header">
+              <h1 className="profile-title animate__animated animate__fadeInDown">
+                {user?.name || 'Нет имени'}
+              </h1>
+              {isOwnProfile && (
+                <button
+                  className="edit-profile-btn"
+                  onClick={() => setIsEditing(!isEditing)}
+                >
+                  {isEditing ? 'Сохранить' : 'Редактировать профиль'}
+                </button>
+              )}
+            </div>
             <RatingDisplay rating={user.sellerAverageRating || 0} reviewCount={user.sellerReviewCount || 0} />
             <div className="profile-description animate__animated animate__fadeInUp">
               <p>{user?.description || 'Нет описания'}</p>
             </div>
-            {isOwnProfile && (
-              <>
-                <div className="mt-4">
-                </div>
-                <AvatarUploader user={user} setUser={setUser} />
-              </>
+            {isOwnProfile && isEditing && (
+              <AvatarUploader user={user} setUser={setUser} />
             )}
           </div>
         </div>

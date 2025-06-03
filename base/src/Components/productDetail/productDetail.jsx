@@ -168,6 +168,14 @@ const ProductDetail = () => {
                   Опубликовано: {new Date(product.creationDate).toLocaleDateString()}
                 </span>
               </div>
+                  <div className='contact-info-container'>
+              {product.user && product.user.email && (
+                      <div className="contact-info">
+                        <span className="contact-label">Контактные данные:</span>
+                        <span className="contact-email">{product.user.email}</span>
+                      </div>
+              )}
+                  </div>
             </div>
             {!isOwnProduct && user && (
               <button
