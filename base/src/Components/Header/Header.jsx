@@ -25,7 +25,7 @@ const Header = () => {
 
   return (
     <header>
-      <h1><Link to="/">Hardpoint</Link></h1>
+      <h1><Link className='title' to="/">hardpoint</Link></h1>
       <div className='HeaderButtons'>
         {!user ? (
           <Link to="/Login" className="btn btn-success">Вход</Link>

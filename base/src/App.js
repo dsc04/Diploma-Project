@@ -6,6 +6,7 @@ import Login from './Components/Login/Login.jsx';
 import AddProduct from './Components/addProduct/addProduct.jsx';
 import { AuthProvider } from './Context/AuthContext.js';
 import ProductDetail from './Components/productDetail/productDetail.jsx';
+import NotFoundMessage from './Components/notFoundMessage/notFoundMessage.jsx';
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 
@@ -42,6 +43,10 @@ function App() {
     {
       path:"/product/:id",
       element:<ProductDetail/>
+    },
+    {
+      path:"*",
+      element:<NotFoundMessage/>
     }
   ])
   return (
